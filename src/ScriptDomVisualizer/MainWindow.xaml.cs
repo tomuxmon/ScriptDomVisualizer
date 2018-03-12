@@ -51,7 +51,6 @@ namespace ScriptDomVisualizer
             if (null == token)
                 return;
 
-            _userChanges = false;
             var currentRange = InputBox.Selection;
             currentRange.Select(currentRange.Start.DocumentStart, currentRange.Start.DocumentEnd);
             currentRange.ApplyPropertyValue(TextElement.ForegroundProperty, new SolidColorBrush(Colors.Black));
@@ -74,9 +73,6 @@ namespace ScriptDomVisualizer
                 currentRange.ApplyPropertyValue(TextElement.ForegroundProperty, new SolidColorBrush(Colors.Blue));
             }
             catch (Exception esss) { Console.WriteLine(esss); }
-            _userChanges = true;
-
-
         }
 
         private void Results_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -91,7 +87,6 @@ namespace ScriptDomVisualizer
             if (null == fragment)
                 return;
 
-            _userChanges = false;
             var currentRange = InputBox.Selection;
             currentRange.Select(currentRange.Start.DocumentStart, currentRange.Start.DocumentEnd);
             currentRange.ApplyPropertyValue(TextElement.ForegroundProperty, new SolidColorBrush(Colors.Black));
@@ -113,7 +108,6 @@ namespace ScriptDomVisualizer
 
                 currentRange.ApplyPropertyValue(TextElement.ForegroundProperty, new SolidColorBrush(Colors.Blue));
             }catch(Exception esss) { Console.WriteLine(esss); }
-            _userChanges = true;
         }
 
         private static TextPointer GetPoint(TextPointer start, int x)
@@ -164,19 +158,14 @@ namespace ScriptDomVisualizer
 
             return null;
         }
-
-        bool _userChanges = true;
-
         
         private void Parse()
         {
             Errors.Text = "";
             MaxDepth = Int32.Parse(DepthText.Text);
 
-            var parser = new TSql120Parser(true);
-
-            IList<ParseError> errors;
-            var script = parser.Parse(new StringReader(GetText()), out errors);
+            var parser = new TSql140Parser(true);
+            var script = parser.Parse(new StringReader(GetText()), out IList<ParseError> errors);
 
             if (errors.Count > 0)
             {
