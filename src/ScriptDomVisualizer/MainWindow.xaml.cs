@@ -164,7 +164,7 @@ namespace ScriptDomVisualizer
             Errors.Text = "";
             MaxDepth = Int32.Parse(DepthText.Text);
 
-            var parser = new TSql140Parser(true);
+            var parser = new TSql150Parser(true);
             var script = parser.Parse(new StringReader(GetText()), out IList<ParseError> errors);
 
             if (errors.Count > 0)
